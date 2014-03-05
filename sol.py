@@ -54,6 +54,11 @@ def check(l):
 
     # normalize it
     s_l = sum(l_)
+
+    # in TA's stupid test cases, there's a 'no-freture' row ...
+    if s_l == 0:
+        return True
+
     l_ = [ l[i]/s_l for i in range(228) ]
 
     # the 'distance' in a 228-dimension space
@@ -84,6 +89,7 @@ for _ in range(200):
 
 
 
+"""
 ct = 0
 c1t = 0   # c1 -> c1
 c1f = 0   # c1 -> c2
@@ -115,4 +121,24 @@ print(c1t)
 print(c1f)
 print(c2f)
 print(c2t)
+"""
 
+"""
+383
+17
+16
+384
+"""
+
+# read the test file
+test_f = open("TAdrop/test.txt", "r");
+
+for line in test_f:
+    l = [ int(x) for x in line.split() ]
+
+    if check(l):
+        print("1")
+    else:
+        print("2")
+
+test_f.close()
