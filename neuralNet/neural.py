@@ -6,12 +6,9 @@ import math
 t = []
 label = [0, 1]
 
-w = [1.0] * 228
+w = [0.5] * 228
 
-def run():
-    global t
-    global label
-    global w
+def run(t):
 
     # read the file
     train_f = open("../TAdrop/train.txt", "r");
@@ -27,41 +24,42 @@ def run():
         s_t = sum(t[i])
         t[i] = [ t[i][x]/s_t for x in range(228) ]
 
-    # learning
+
+
+def learning(t, label, w):
+
     k = i = 0
-    while i < 800:
-        in_ = 0.0
-        for j in range(228):
-            in_ -= t[i][j] * w[j]
+    learning_limit = 800
+    # learning times
+    while k < learning_limit:
+
+        in_ = -sum( t[i][j] * w[j] for j in range(228) )
 
         g = 1 / (1.0 + math.e**in_)
 
+        l = 0 if i < 400 else 1
+
         # learing progress
-        #if k < 800*800*10:
-        if k < 800*100*10:
-            k += 1
+        if (label[l] == 0 and g <= 0.5) or \
+           (label[l] == 1 and g > 0.5):
+            pass
         else:
-            break
+            # not correct
+            k //= 2
+            Err = label[l] - g;
 
-        if label[i >= 400] == 0 and g <= 0.5:
-            i = (i+1) % 800
-            continue
-        elif label[i >= 400] == 1 and g > 0.5:
-            i = (i+1) % 800
-            continue
+            # adjust weight
+            for j in range(228):
+                w[j] += 0.05 * Err * g * (1-g) * t[i][j]
 
-        # not correct
-        k -= 2
-        Err = label[i >= 400] - g;
-
-        # adjust weight
-        for j in range(228):
-            w[j] += 0.01 * Err * g * (1-g) * t[i][j]
-
-
+        k += 1
         i = (i+1) % 800
 
-    # run training data
+
+
+def test(t, label, w):
+    """ run training data """
+
     k = 0;
     for i in range(800):
         in_ = 0.0
@@ -70,12 +68,17 @@ def run():
 
         g = 1 / (1.0 + math.e**in_)
 
-        if label[i >= 400] == 0 and g <= 0.5:
+        l = 0 if i < 400 else 1
+
+        if label[l] == 0 and g <= 0.5:
             k += 1
-        elif label[i >= 400] == 1 and g > 0.5:
+        elif label[l] == 1 and g > 0.5:
             k += 1
 
 
     print("{} correct".format(k))
 
-run()
+
+run(t)
+learning(t, label, w)
+test(t, label, w)
