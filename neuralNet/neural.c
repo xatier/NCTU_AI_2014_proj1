@@ -6,7 +6,7 @@ int main(){
     FILE* train = fopen("../TAdrop/train.txt", "r");
     double t[800][229], w[228];
     double label[2] = {0, 1};
-    int i, j, k = 0;
+    int i, j, k = 0, l;
 
     for(i = 0 ; i < 800 ; i++){
         t[i][228] = 0;
@@ -23,7 +23,7 @@ int main(){
 
     //weight init
     for(j = 0 ; j < 228 ; j++)
-        w[j] = 1.0;
+        w[j] = 0.5;
 
     //learning
     for(i = 0 ; i < 800 ; i=(i+1)%800){
@@ -32,20 +32,22 @@ int main(){
             in -= t[i][j]*w[j];
         double g = 1/(1+exp(in));
 
-        if(k < 800*800*10)//learing progress
+        if(k < 800)//learing progress
             k++;
         else
             break;
 
-        if(label[i/400] == 0 && g <= 0.5)
+        l = i < 400 ? 0 : 1;
+
+        if(label[l] == 0 && g <= 0.5)
             continue;
-        else if(label[i/400] == 1 && g > 0.5)
+        else if(label[l] == 1 && g > 0.5)
             continue;
 
-        k -= 2;//not correct
-        double Err = label[i/400] - g;
+        k /= 2;//not correct
+        double Err = label[l] - g;
         for(j = 0 ; j < 228 ; j++)
-            w[j] += 0.01*Err*g*(1-g)*t[i][j];//adjust weight
+            w[j] += 0.05*Err*g*(1-g)*t[i][j];//adjust weight
 
     }
 
@@ -57,9 +59,11 @@ int main(){
             in -= t[i][j]*w[j];
         double g = 1/(1+exp(in));
 
-        if(label[i/400] == 0 && g <= 0.5)
+        l = i < 400 ? 0 : 1;
+
+        if(label[l] == 0 && g <= 0.5)
             k++;
-        else if(label[i/400] == 1 && g > 0.5)
+        else if(label[l] == 1 && g > 0.5)
             k++;
     }
 
