@@ -3,7 +3,7 @@
 
 int main(){
 
-    FILE* train = fopen("train.txt", "r");
+    FILE* train = fopen("../TAdrop/train.txt", "r");
     double t[800][229], w[228];
     double label[2] = {0, 1};
     int i, j, k = 0;
@@ -15,6 +15,7 @@ int main(){
             t[i][228] += t[i][j];
         }
     }
+    fclose(train);
 
     for(i = 0 ; i < 800 ; i++)
         for(j = 0 ; j < 228 ; j++)
