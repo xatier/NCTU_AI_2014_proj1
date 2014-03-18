@@ -52,19 +52,18 @@ int main (void) {
             }
         }
 
-        if (r_i < 400) {
-            //std::fputs("1\n", output);
-            if (i < 400)
+
+        if (i < 400) {
+            if (r_i < 400)
                 one++;
             else
                 one_++;
-        } else {
-            //std::fputs("2\n", output);
-            if (i < 400)
+        }
+        else {
+            if (r_i < 400)
                 two_++;
             else
                 two++;
-
         }
     }
     //std::fclose(output);
