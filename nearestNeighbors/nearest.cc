@@ -1,5 +1,5 @@
-#include<cstdio>
-#include<cmath>
+#include <cstdio>
+#include <cmath>
 
 int main (void) {
 
@@ -7,9 +7,9 @@ int main (void) {
     double tr[800][229];
     int i, j, k;
 
-    for(i = 0; i < 800; ++i) {
+    for (i = 0; i < 800; ++i) {
         tr[i][228] = 0;
-        for(j = 0; j < 228; ++j) {
+        for (j = 0; j < 228; ++j) {
             std::fscanf(train, "%lf", &tr[i][j]);
             tr[i][228] += tr[i][j]*tr[i][j];
         }
@@ -19,9 +19,9 @@ int main (void) {
     FILE* test = std::fopen("../TAdrop/test.txt", "r");
     double te[200][229];
 
-    for(i = 0; i < 200; ++i) {
+    for (i = 0; i < 200; ++i) {
         te[i][228] = 0;
-        for(j = 0; j < 228; ++j) {
+        for (j = 0; j < 228; ++j) {
             std::fscanf(test, "%lf", &te[i][j]);
             te[i][228] += te[i][j]*te[i][j];
         }
@@ -34,7 +34,7 @@ int main (void) {
     int r_i = 0;            //record index
     double min_a = 0;       //minimum angle
     FILE* output = std::fopen("./test_out", "w");
-    for(i = 0; i < 200; ++i){
+    for (i = 0; i < 200; ++i) {
         r_i = 0;
         min_a = 0;
         for (j = 0; j < 800; ++j) {
